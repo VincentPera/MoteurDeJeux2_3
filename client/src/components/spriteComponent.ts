@@ -31,9 +31,9 @@ export class SpriteComponent extends Component<ISpriteComponentDesc> implements 
   private animWaitCounter: number;
   private descr: IFrameEntry;
   private spriteSize: ISize;
-  private vertexBuffer: WebGLBuffer;
+  public vertexBuffer: WebGLBuffer;
   private vertices: Float32Array;
-  private indexBuffer: WebGLBuffer;
+  public indexBuffer: WebGLBuffer;
 
   // ## Méthode *create*
   // Cette méthode est appelée pour configurer le composant avant

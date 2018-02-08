@@ -8,7 +8,6 @@
     "strict": true
   },
   "include": [
-    "./src/**/*.ts",
-    "../common/**.ts"
+    "./src/**/*.ts"
   ]
 }
