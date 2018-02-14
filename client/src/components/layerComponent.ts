@@ -12,30 +12,30 @@ let GL: WebGLRenderingContext;
 // même plan.
 export class LayerComponent extends Component<Object> implements IDisplayComponent {
 
-	public vertexBuffer: WebGLBuffer;
-	public indexBuffer: WebGLBuffer;
+	private vertexBuffer: WebGLBuffer;
+	private indexBuffer: WebGLBuffer;
+	private vertexSize: number;
 
 
-
-	// ## Méthode *setup*
 	setup() {
 		GL = GraphicsAPI.context;
-
+		this.vertexSize = 5;
 		// Build the buffers
 		this.vertexBuffer = GL.createBuffer()!;
 		this.indexBuffer = GL.createBuffer()!;
 
-		// Initialize the data stores
-		const MAX_SPRITES = 1000;
+		const MAX_SPRITES = 99;
+
 		var vertices = new Float32Array(4 * 5 * MAX_SPRITES);
 		var ind = [];
+
 		for (var i = 0; i < MAX_SPRITES; i++) {
 			var k = i * 4;
 			ind.push(k, k + 1, k + 2, k + 2, k + 3, k);
 		}
 		var indices = new Uint16Array(ind);
 
-		// Set the context
+		// Bind all the buffers and set the contextual datas
 		GL.bindBuffer(GL.ARRAY_BUFFER, this.vertexBuffer);
 		GL.bufferData(GL.ARRAY_BUFFER, vertices, GL.DYNAMIC_DRAW);
 		GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
@@ -48,6 +48,7 @@ export class LayerComponent extends Component<Object> implements IDisplayCompone
   // La méthode *display* est appelée une fois par itération
   // de la boucle de jeu.
 	display(dT: number) {
+		//Gather all the sprite of the same layer in an array
 		const layerSprites = this.listSprites();
 		if (layerSprites.length === 0) {
 			return;
@@ -55,43 +56,17 @@ export class LayerComponent extends Component<Object> implements IDisplayCompone
 		GL = GraphicsAPI.context;
 		const spriteSheet = layerSprites[0].spriteSheet;
 
-	
-		/*if (layerSprites.length >=0){
-			for (var i = 0; i < layerSprites.length; i++) {
-				
-				GL.bindBuffer(GL.ARRAY_BUFFER, layerSprites[i].vertexBuffer);
-				GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, layerSprites[i].indexBuffer);
-				layerSprites[i].spriteSheet.bind();
-				GL.drawElements(GL.TRIANGLES, 6, GL.UNSIGNED_SHORT, 0);
-				layerSprites[i].spriteSheet.unbind();
-			}
-		}*/
-		
-
-    /*for (var i = 0; i < layerSprites.length; i++) {
-            
-            GL.bindBuffer(GL.ARRAY_BUFFER, layerSprites[i].vertexBuffer);
-			//GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, layerSprites[i].indexBuffer);
-			layerSprites[i].spriteSheet.bind();
-			
-     }
-	  GL.drawArrays(GL.TRIANGLES, 0, 1);   
-    
-    for (var i = 0; i < layerSprites.length; i++) {
-        layerSprites[i].spriteSheet.unbind();
-       
-    }*/
 
 		if (spriteSheet) {
-			// Build the data stores
-			var vertexSize = 5;
-			var vertices = new Float32Array(4 * vertexSize * layerSprites.length);
+			
+			//create one big sprite from all the sprite of the same layer
+			var vertices = new Float32Array(4 * this.vertexSize * layerSprites.length);
 			var ind = [];
 			for (var i = 0; i < layerSprites.length; i++) {
 				var sprite = layerSprites[i];
 				if (sprite.vertices) {
 					var k = i * 4;
-					vertices.set(sprite.vertices, k * vertexSize);
+					vertices.set(sprite.vertices, k * this.vertexSize);
 					ind.push(k, k + 1, k + 2, k + 2, k + 3, k);
 				}
 			}
@@ -99,13 +74,13 @@ export class LayerComponent extends Component<Object> implements IDisplayCompone
 
 
 
-			// Set the context
+			// Bind all the buffers and set the contextual datas
 			GL.bindBuffer(GL.ARRAY_BUFFER, this.vertexBuffer);
 			GL.bufferSubData(GL.ARRAY_BUFFER, 0, vertices);
 			GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
 			GL.bufferSubData(GL.ELEMENT_ARRAY_BUFFER, 0, indices);
 
-			// Draw
+			// Draw all the sprites in the scene
 			spriteSheet.bind();
 			GL.drawElements(GL.TRIANGLES, 6 * i, GL.UNSIGNED_SHORT, 0);
 			spriteSheet.unbind();
