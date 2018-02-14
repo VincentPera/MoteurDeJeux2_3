@@ -5,11 +5,16 @@ import * as GraphicsAPI from '../graphicsAPI';
 
 let GL: WebGLRenderingContext;
 
+
 // # Classe *LayerComponent*
 // Ce composant représente un ensemble de sprites qui
 // doivent normalement être considérées comme étant sur un
 // même plan.
 export class LayerComponent extends Component<Object> implements IDisplayComponent {
+
+	public vertexBuffer: WebGLBuffer;
+	public indexBuffer: WebGLBuffer;
+
   // ## Méthode *display*
   // La méthode *display* est appelée une fois par itération
   // de la boucle de jeu.
@@ -48,19 +53,22 @@ export class LayerComponent extends Component<Object> implements IDisplayCompone
        
     }*/
 
-		/*if (spriteSheet) {
+		if (spriteSheet) {
 			// Build the data stores
-			var vertices = new Float32Array(4 * 6 * layerSprites.length);
+			var vertexSize = 5;
+			var vertices = new Float32Array(4 * vertexSize * layerSprites.length);
 			var ind = [];
 			for (var i = 0; i < layerSprites.length; i++) {
 				var sprite = layerSprites[i];
-				if (sprite.vertexBuffer) {
+				if (sprite.vertices) {
 					var k = i * 4;
-					vertices.set(sprite.vertexBuffer, k * 6);
+					vertices.set(sprite.vertices, k * vertexSize);
 					ind.push(k, k + 1, k + 2, k + 2, k + 3, k);
 				}
 			}
 			var indices = new Uint16Array(ind);
+
+
 
 			// Set the context
 			GL.bindBuffer(GL.ARRAY_BUFFER, this.vertexBuffer);
@@ -72,7 +80,7 @@ export class LayerComponent extends Component<Object> implements IDisplayCompone
 			spriteSheet.bind();
 			GL.drawElements(GL.TRIANGLES, 6 * i, GL.UNSIGNED_SHORT, 0);
 			spriteSheet.unbind();
-		}*/
+		}
 
 
     
