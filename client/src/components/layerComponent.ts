@@ -15,6 +15,35 @@ export class LayerComponent extends Component<Object> implements IDisplayCompone
 	public vertexBuffer: WebGLBuffer;
 	public indexBuffer: WebGLBuffer;
 
+
+
+	// ## Méthode *setup*
+	setup() {
+		GL = GraphicsAPI.context;
+
+		// Build the buffers
+		this.vertexBuffer = GL.createBuffer()!;
+		this.indexBuffer = GL.createBuffer()!;
+
+		// Initialize the data stores
+		const MAX_SPRITES = 1000;
+		var vertices = new Float32Array(4 * 5 * MAX_SPRITES);
+		var ind = [];
+		for (var i = 0; i < MAX_SPRITES; i++) {
+			var k = i * 4;
+			ind.push(k, k + 1, k + 2, k + 2, k + 3, k);
+		}
+		var indices = new Uint16Array(ind);
+
+		// Set the context
+		GL.bindBuffer(GL.ARRAY_BUFFER, this.vertexBuffer);
+		GL.bufferData(GL.ARRAY_BUFFER, vertices, GL.DYNAMIC_DRAW);
+		GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+		GL.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices, GL.DYNAMIC_DRAW);
+
+	}
+
+
   // ## Méthode *display*
   // La méthode *display* est appelée une fois par itération
   // de la boucle de jeu.
