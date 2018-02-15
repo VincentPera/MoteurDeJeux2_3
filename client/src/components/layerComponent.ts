@@ -2,6 +2,7 @@ import { Component } from './component';
 import { SpriteComponent } from './spriteComponent';
 import { IDisplayComponent } from '../displaySystem';
 import * as GraphicsAPI from '../graphicsAPI';
+import { IEntity, Entity } from './entity';
 
 let GL: WebGLRenderingContext;
 
@@ -93,7 +94,7 @@ export class LayerComponent extends Component<Object> implements IDisplayCompone
   // ## Fonction *listSprites*
   // Cette fonction retourne une liste comportant l'ensemble
   // des sprites de l'objet courant et de ses enfants.
-  private listSprites() {
+  /*private listSprites() {
     const sprites: SpriteComponent[] = [];
     this.owner.walkChildren((child) => {
       if (!child.active)
@@ -106,5 +107,42 @@ export class LayerComponent extends Component<Object> implements IDisplayCompone
     });
 
     return sprites;
+	}
+	*/
+
+  // ## Fonction *listSprites*
+  // Cette fonction retourne une liste comportant l'ensemble
+  // des sprites de l'objet courant et de ses enfants.
+  listSprites() {
+	  var sprites: SpriteComponent[] = [];
+	  sprites =  this.listSpritesRecursive(this.owner, sprites);
+	  return sprites;
   }
+
+  // ## Fonction *listSpritesRecursive*
+  //Développé dans le but de récupérer le HUD qui était indisponible dans la première version du code
+  listSpritesRecursive(obj: IEntity, sprites: SpriteComponent[]): SpriteComponent[]  {
+	  if (!obj.active) {
+		  return sprites;
+	  }
+	  obj.walkChildren((child) => {
+		  if (!child.active)
+			  return sprites;
+		  sprites = this.listSpritesRecursive(child, sprites);
+
+	  });
+
+	  obj.walkComponent((comp) => {
+
+		  if (comp instanceof SpriteComponent && comp.enabled) {
+			  sprites.push(comp);
+		  }
+
+	  });
+	 
+	  return sprites;
+  }
+
+
+
 }
