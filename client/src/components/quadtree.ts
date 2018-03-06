@@ -2,7 +2,7 @@ import { Rectangle } from './rectangle';
 import { ColliderComponent } from './colliderComponent';
 
 		// Some constants
-		const MAX_OBJECTS = 10;
+		const MAX_OBJECTS = 50;
 		const MAX_LEVELS = 5;
 
 
@@ -15,7 +15,7 @@ import { ColliderComponent } from './colliderComponent';
 			private colliders: ColliderComponent[];
 			private level: number;
 			private bounds: Rectangle;
-			private nodes : any[];
+			private nodes : Quadtree[];
 
 
 			// Constructor
@@ -132,9 +132,9 @@ import { ColliderComponent } from './colliderComponent';
 				}
 			}
 
-			retrieve(area : Rectangle) {
+			retrieve(area: Rectangle): ColliderComponent[] {
 				var index = this.getIndex(area);
-				var result = [];
+				var result: ColliderComponent[] = [];
 				if (index != -1 && this.nodes.length != 0) {
 					result = this.nodes[index].retrieve(area);
 				}
