@@ -1,5 +1,8 @@
 import { Component, IComponent } from './component';
 import { PositionComponent } from './positionComponent';
+import { RupeeComponent } from './rupeeComponent';
+import { HeartComponent } from './heartComponent';
+import { ChickenComponent } from './chickenComponent';
 import { ILogicComponent } from '../logicSystem';
 import { Rectangle } from './rectangle';
 
@@ -11,6 +14,7 @@ export interface ICollisionComponent extends IComponent {
 // On conserve ici une référence vers toutes les instances
 // de cette classe, afin de déterminer si il y a collision.
 const colliders: ColliderComponent[] = [];
+
 
 // # Classe *ColliderComponent*
 // Ce composant est attaché aux objets pouvant entrer en
@@ -38,9 +42,9 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
   // Cette méthode est appelée pour configurer le composant avant
   // que tous les composants d'un objet aient été créés.
   create(descr: IColliderComponentDesc) {
-    this.flag = descr.flag;
-    this.mask = descr.mask;
-    this.size = descr.size;
+      this.flag = descr.flag;
+      this.mask = descr.mask;
+      this.size = descr.size;
   }
 
   // ## Méthode *setup*
@@ -49,9 +53,9 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
   // On stocke également une référence à l'instance courante dans
   // le tableau statique *colliders*.
   setup(descr: IColliderComponentDesc) {
-    if (descr.handler) {
-      this.handler = this.owner.getComponent<ICollisionComponent>(descr.handler);
-    }
+      if (descr.handler) {
+        this.handler = this.owner.getComponent<ICollisionComponent>(descr.handler);
+      }
     colliders.push(this);
   }
 
@@ -72,7 +76,19 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
         !c.enabled ||
         !c.owner.active) {
         return;
+        }
+      const rupee = c.owner.getComponent<RupeeComponent>('Rupee');
+      const heart = c.owner.getComponent<HeartComponent>('Heart');
+      const chicken = c.owner.getComponent<ChickenComponent>('Chicken');
+
+      if (rupee == undefined && heart == undefined && chicken == undefined) {
+          console.log("CA SAUTE !");
+          return;
       }
+
+        //MANQUE DECOUPAGE DE LA MAP EN ZONE + AFFECTATION D UNE ZONE A UNE ENTITE SUIVANT SA POSITION + CHECK DE ZONE CORRESP A FAIRE ICI
+
+
       if (area.intersectsWith(c.area)) {
         this.handler!.onCollision(c);
       }

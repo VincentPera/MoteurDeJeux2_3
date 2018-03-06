@@ -252,7 +252,6 @@ export class PlayerComponent extends Component<IPlayerComponentDesc> implements 
     const rupee = obj.getComponent<RupeeComponent>('Rupee');
     const heart = obj.getComponent<HeartComponent>('Heart');
     const chicken = obj.getComponent<ChickenComponent>('Chicken');
-
     if (rupee) {
       this.score.value += rupee.value;
       obj.active = false;
