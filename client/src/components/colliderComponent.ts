@@ -5,6 +5,7 @@ import { HeartComponent } from './heartComponent';
 import { ChickenComponent } from './chickenComponent';
 import { ILogicComponent } from '../logicSystem';
 import { Rectangle } from './rectangle';
+import { Quadtree } from './quadtree';
 
 export interface ICollisionComponent extends IComponent {
   onCollision(other: ColliderComponent): void;
@@ -16,14 +17,15 @@ export interface ICollisionComponent extends IComponent {
 const colliders: ColliderComponent[] = [];
 
 
+
 // Le quadtree
-/*
+
 const quadtree = new Quadtree(0, new Rectangle({
 	x: 0,
 	y: 0,
 	width: 768,  // The screen width
 	height: 576, // The screen height
-}));*/
+}));
 
 
 
@@ -83,7 +85,7 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
     }
 
 	// Clear the quadtree
-	//quadtree.clear();
+	quadtree.clear();
 
     const area = this.area;
     colliders.forEach((c) => {
@@ -105,7 +107,7 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
 			  return;
 		  }
 		  //Insert the object in the quadtree
-		  //quadtree.insert(c);
+		  quadtree.insert(c);
 	  });
 
       /*const rupee = c.owner.getComponent<RupeeComponent>('Rupee');
@@ -120,17 +122,17 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
         //MANQUE DECOUPAGE DE LA MAP EN ZONE + AFFECTATION D UNE ZONE A UNE ENTITE SUIVANT SA POSITION + CHECK DE ZONE CORRESP A FAIRE ICI
 
 	  // Iterate through the pertinent colliders using the content of the quadtree
-	  /*var pertinentColliders = quadtree.retrieve(area);
-	  pertinentColliders.forEach((c) => {
+	  var pertinentColliders = quadtree.retrieve(area);
+	  pertinentColliders.forEach((c: ColliderComponent) => {
 		  // Bounding box test
 		  if (area.intersectsWith(c.area)) {
-			  this.handler.onCollision(c);
+			  this.handler!.onCollision(c);
 		  }
-	  });*/
+	  });
 
-      if (area.intersectsWith(c.area)) {
+      /*if (area.intersectsWith(c.area)) {
         this.handler!.onCollision(c);
-      }
+      }*/
     });
   }
 

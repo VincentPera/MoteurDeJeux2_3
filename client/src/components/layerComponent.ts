@@ -91,24 +91,6 @@ export class LayerComponent extends Component<Object> implements IDisplayCompone
     
   }
 
-  // ## Fonction *listSprites*
-  // Cette fonction retourne une liste comportant l'ensemble
-  // des sprites de l'objet courant et de ses enfants.
-  /*private listSprites() {
-    const sprites: SpriteComponent[] = [];
-    this.owner.walkChildren((child) => {
-      if (!child.active)
-        return;
-
-      child.walkComponent((comp) => {
-        if (comp instanceof SpriteComponent && comp.enabled)
-          sprites.push(comp);
-      });
-    });
-
-    return sprites;
-	}
-	*/
 
   // ## Fonction *listSprites*
   // Cette fonction retourne une liste comportant l'ensemble
