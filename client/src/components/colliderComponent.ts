@@ -95,6 +95,16 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
         return;
 	  }
 
+
+      /*const rupee = c.owner.getComponent<RupeeComponent>('Rupee');
+      const heart = c.owner.getComponent<HeartComponent>('Heart');
+	  const chicken = c.owner.getComponent<ChickenComponent>('Chicken');
+	  
+      if (rupee == undefined && heart == undefined && chicken == undefined) {
+          console.log("CA SAUTE !");
+          return;
+      }*/
+
 	  // Build the quadtree
 	  colliders.forEach((c) => {
 		  // Trivial cases
@@ -110,16 +120,6 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
 		  quadtree.insert(c);
 	  });
 
-      /*const rupee = c.owner.getComponent<RupeeComponent>('Rupee');
-      const heart = c.owner.getComponent<HeartComponent>('Heart');
-	  const chicken = c.owner.getComponent<ChickenComponent>('Chicken');
-	  
-      if (rupee == undefined && heart == undefined && chicken == undefined) {
-          console.log("CA SAUTE !");
-          return;
-      }*/
-
-        //MANQUE DECOUPAGE DE LA MAP EN ZONE + AFFECTATION D UNE ZONE A UNE ENTITE SUIVANT SA POSITION + CHECK DE ZONE CORRESP A FAIRE ICI
 
 	  // Iterate through the pertinent colliders using the content of the quadtree
 	  var pertinentColliders = quadtree.retrieve(area);
