@@ -16,6 +16,17 @@ export interface ICollisionComponent extends IComponent {
 const colliders: ColliderComponent[] = [];
 
 
+// Le quadtree
+/*
+const quadtree = new Quadtree(0, new Rectangle({
+	x: 0,
+	y: 0,
+	width: 768,  // The screen width
+	height: 576, // The screen height
+}));*/
+
+
+
 // # Classe *ColliderComponent*
 // Ce composant est attaché aux objets pouvant entrer en
 // collision.
@@ -42,9 +53,10 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
   // Cette méthode est appelée pour configurer le composant avant
   // que tous les composants d'un objet aient été créés.
   create(descr: IColliderComponentDesc) {
-      this.flag = descr.flag;
-      this.mask = descr.mask;
-      this.size = descr.size;
+	  this.flag = descr.flag;
+	  this.mask = descr.mask;
+	  this.size = descr.size;
+	  this.active = true;
   }
 
   // ## Méthode *setup*
@@ -70,24 +82,51 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
       return;
     }
 
+	// Clear the quadtree
+	//quadtree.clear();
+
     const area = this.area;
     colliders.forEach((c) => {
       if (c === this ||
         !c.enabled ||
         !c.owner.active) {
         return;
-        }
-      const rupee = c.owner.getComponent<RupeeComponent>('Rupee');
-      const heart = c.owner.getComponent<HeartComponent>('Heart');
-      const chicken = c.owner.getComponent<ChickenComponent>('Chicken');
+	  }
 
+	  // Build the quadtree
+	  colliders.forEach((c) => {
+		  // Trivial cases
+		  if (c === this || !c.enabled || !c.owner.active) {
+			  return;
+		  }
+
+		  // Ignore the collider if its flag is not in the current mask
+		  if (!(c.flag & this.mask)) {
+			  return;
+		  }
+		  //Insert the object in the quadtree
+		  //quadtree.insert(c);
+	  });
+
+      /*const rupee = c.owner.getComponent<RupeeComponent>('Rupee');
+      const heart = c.owner.getComponent<HeartComponent>('Heart');
+	  const chicken = c.owner.getComponent<ChickenComponent>('Chicken');
+	  
       if (rupee == undefined && heart == undefined && chicken == undefined) {
           console.log("CA SAUTE !");
           return;
-      }
+      }*/
 
         //MANQUE DECOUPAGE DE LA MAP EN ZONE + AFFECTATION D UNE ZONE A UNE ENTITE SUIVANT SA POSITION + CHECK DE ZONE CORRESP A FAIRE ICI
 
+	  // Iterate through the pertinent colliders using the content of the quadtree
+	  /*var pertinentColliders = quadtree.retrieve(area);
+	  pertinentColliders.forEach((c) => {
+		  // Bounding box test
+		  if (area.intersectsWith(c.area)) {
+			  this.handler.onCollision(c);
+		  }
+	  });*/
 
       if (area.intersectsWith(c.area)) {
         this.handler!.onCollision(c);
