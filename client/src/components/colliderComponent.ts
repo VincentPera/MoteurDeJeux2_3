@@ -18,17 +18,6 @@ const colliders: ColliderComponent[] = [];
 
 
 
-// Le quadtree
-
-const quadtree = new Quadtree(0, new Rectangle({
-	x: 0,
-	y: 0,
-	width: 770,  // The screen width
-	height: 578, // The screen height
-}));
-
-
-
 // # Classe *ColliderComponent*
 // Ce composant est attaché aux objets pouvant entrer en
 // collision.
@@ -84,25 +73,14 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
     }
 
 	// Clear the quadtree
-	quadtree.clear();
+    const quadtree = new Quadtree(0, new Rectangle({
+        x: 0,
+        y: 0,
+        width: 770,  // The screen width
+        height: 578, // The screen height
+    }));
 
     const area = this.area;
-    colliders.forEach((c) => {
-      if (c === this ||
-        !c.enabled ||
-        !c.owner.active) {
-        return;
-	  }
-
-
-      /*const rupee = c.owner.getComponent<RupeeComponent>('Rupee');
-      const heart = c.owner.getComponent<HeartComponent>('Heart');
-	  const chicken = c.owner.getComponent<ChickenComponent>('Chicken');
-	  
-      if (rupee == undefined && heart == undefined && chicken == undefined) {
-          console.log("CA SAUTE !");
-          return;
-      }*/
 
 	  // Build the quadtree
 	  colliders.forEach((c) => {
@@ -115,8 +93,8 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
 		  if (!(c.flag & this.mask)) {
 			  return;
 		  }
-		  //Insert the object in the quadtree
-		  quadtree.insert(c);
+          //Insert the object in the quadtree
+          quadtree.insert(c);
 	  });
 
 
@@ -124,9 +102,12 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
 		//Know issue : all collisions are at least doubled for an unknown reason.
 		//To desactivate the quadtree use comment the aprt below and uncomment the part directly following
 	  var pertinentColliders = quadtree.retrieve(area);
-	  pertinentColliders.forEach((c: ColliderComponent) => {
-		  // Bounding box test
-		  if (area.intersectsWith(c.area)) {
+      pertinentColliders.forEach((c) => {
+        /*  console.log(this.owner);
+          console.log(c.owner);*/
+          // Bounding box test
+          if (area.intersectsWith(c.area) && c.active) {
+
 			  this.handler!.onCollision(c);
 		  }
 	  });
@@ -134,7 +115,6 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
       /*if (area.intersectsWith(c.area)) {
         this.handler!.onCollision(c);
       }*/
-    });
   }
 
   // ## Propriété *area*

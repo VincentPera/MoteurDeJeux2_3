@@ -248,27 +248,26 @@ export class PlayerComponent extends Component<IPlayerComponentDesc> implements 
   // état d'attaque, sinon on soustrait le score et on désactive
   // ce poulet.
   onCollision(otherCollider: ColliderComponent) {
-
 	const obj = otherCollider.owner;
     const rupee = obj.getComponent<RupeeComponent>('Rupee');
     const heart = obj.getComponent<HeartComponent>('Heart');
     const chicken = obj.getComponent<ChickenComponent>('Chicken');
     if (rupee) {
-      this.score.value += rupee.value;
-	  obj.active = false;
-		if(obj.parent!=null)
-			obj.parent!.removeChild(obj);
+            this.score.value += rupee.value;
+            obj.active = false;
+            obj.parent!.removeChild(obj);
     }
     if (heart) {
       this.life.value += heart.heal;
       obj.active = false;
       obj.parent!.removeChild(obj);
     }
-    if (chicken) {
+    if (chicken != undefined) {
       if (this.isAttacking) {
         chicken.onAttack();
       } else {
-        this.life.value -= chicken.attack;
+          this.life.value -= chicken.attack;
+          console.log(this.life.value);
       }
     }
   }
