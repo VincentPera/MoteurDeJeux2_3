@@ -23,8 +23,8 @@ const colliders: ColliderComponent[] = [];
 const quadtree = new Quadtree(0, new Rectangle({
 	x: 0,
 	y: 0,
-	width: 768,  // The screen width
-	height: 576, // The screen height
+	width: 770,  // The screen width
+	height: 578, // The screen height
 }));
 
 
