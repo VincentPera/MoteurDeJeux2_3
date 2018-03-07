@@ -262,7 +262,7 @@ export class PlayerComponent extends Component<IPlayerComponentDesc> implements 
       obj.active = false;
       obj.parent!.removeChild(obj);
     }
-    if (chicken != undefined) {
+    if (chicken) {
       if (this.isAttacking) {
         chicken.onAttack();
       } else {
