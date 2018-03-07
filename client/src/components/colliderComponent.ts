@@ -58,7 +58,6 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
 	  this.flag = descr.flag;
 	  this.mask = descr.mask;
 	  this.size = descr.size;
-	  this.active = true;
   }
 
   // ## Méthode *setup*
@@ -122,6 +121,8 @@ export class ColliderComponent extends Component<IColliderComponentDesc> impleme
 
 
 	  // Iterate through the pertinent colliders using the content of the quadtree
+		//Know issue : all collisions are at least doubled for an unknown reason.
+		//To desactivate the quadtree use comment the aprt below and uncomment the part directly following
 	  var pertinentColliders = quadtree.retrieve(area);
 	  pertinentColliders.forEach((c: ColliderComponent) => {
 		  // Bounding box test
