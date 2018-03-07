@@ -1,3 +1,6 @@
+Note : Les travaux précédents avaient été remis sur le moodle de Vincent PERA qui est en France pour la relâche.
+Du fait du décalage horaire nous nous permettons de changer le compte de dépôt pour cet exercice.
+
 Liste des étudiants :
 
 Guilhem CICHOCKi CICG11029408
